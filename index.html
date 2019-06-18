@@ -15,7 +15,21 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-
+    <link
+      href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://code.highcharts.com/css/stocktools/gui.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://code.highcharts.com/css/annotations/popup.css"
+    />
+    <link rel="stylesheet" href="style.css" />
     <title>stocks api</title>
   </head>
   <body>
@@ -36,35 +50,137 @@
             aria-label="Search"
             id="symbolValue"
           />
-          <button
-            class="btn aqua-gradient btn-rounded btn-sm my-0"
-            type="submit"
-          >
+          <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit">
             Search
           </button>
         </form>
       </div>
-    </div>
 
-    <div class="container">
-      <div class="row">
-        <ul id="w-details" class="list-group mt-3">
-          <input type="number" class="form-control" id="open" disabled />
-          <input type="number" class="form-control" id="high" disabled />
-          <input type="number" class="form-control" id="low" disabled />
-          <input type="number" class="form-control" id="close" disabled />
-          <input type="number" class="form-control" id="volume" disabled />
-        </ul>
+      <div class="timeFrameButtons">
+        <div class="dropdown">
+          <button
+            class="btn btn-primary dropdown-toggle"
+            style="margin-right:0.3rem"
+            type="button"
+            id="dropdownMenu2"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Intraday
+          </button>
+          <div
+            class="dropdown-menu"
+            id="intervalButtons"
+            aria-labelledby="dropdownMenu2"
+          >
+            <button class="dropdown-item interval" value="5min" type="button">
+              5min
+            </button>
+            <button class="dropdown-item interval" value="15min" type="button">
+              15min
+            </button>
+            <button class="dropdown-item interval" value="30min" type="button">
+              30min
+            </button>
+          </div>
+        </div>
+        <div id="timeFrame">
+          <button
+            type="button"
+            value="TIME_SERIES_DAILY"
+            class="btn btn-primary timeFrame"
+          >
+            Daily
+          </button>
+          <button
+            type="button"
+            value="TIME_SERIES_WEEKLY"
+            class="btn btn-primary timeFrame"
+          >
+            Weekly
+          </button>
+          <button
+            type="button"
+            value="TIME_SERIES_MONTHLY"
+            class="btn btn-primary timeFrame"
+          >
+            Monthly
+          </button>
+        </div>
       </div>
     </div>
 
+    <div class="chartContainer">
+      <H2 id="chartHeader">The Boeing Company</H2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Symbol</th>
+            <th scope="col">Company Name</th>
+            <th scope="col">Stock Price</th>
+            <th scope="col">Change Percent</th>
+            <th scope="col">
+              <button
+                type="submit"
+                id="favButton"
+                class="fa fa-plus"
+                style="margin-top: 4px; background-color: black;color:yellow;font-size:24px;"
+              ></button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" id="uiSymbol"></th>
+            <td id="name"></td>
+            <td id="stockPrice"></td>
+            <td id="changePercent" style="display:inline-block;"></td>
+            <td style="display:inline-block;padding-left:0">
+              <i id="arrow" class="fa"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="chartContainer" style="position: relative"></div>
+    </div>
+    <div class="favList">
+      <h2 class="favHeader">Favourite List</h2>
+
+      <h2 class="favHeader refresh">
+        Refresh:
+        <button class="favButton"><i class="fa fa-refresh"></i></button>
+      </h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Symbol</th>
+            <th scope="col">Company Name</th>
+            <th scope="col">Stock Price</th>
+            <th scope="col">Change Percent</th>
+          </tr>
+        </thead>
+        <tbody id="listItems"></tbody>
+      </table>
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+
+    <script src="https://code.highcharts.com/stock/indicators/indicators-all.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
+
+    <script src="https://code.highcharts.com/modules/annotations-advanced.js"></script>
+    <script src="https://code.highcharts.com/modules/price-indicator.js"></script>
+    <script src="https://code.highcharts.com/modules/full-screen.js"></script>
+
+    <script src="https://code.highcharts.com/modules/stock-tools.js"></script>
+    <!-- <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
       crossorigin="anonymous"
-    ></script>
+    ></script> -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -76,6 +192,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="alphavantage.js"></script>
+    <script src="favList.js"></script>
     <script src="ui.js"></script>
     <script src="app.js"></script>
   </body>

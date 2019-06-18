@@ -1,0 +1,31 @@
+.timeFrameButtons {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: -webkit-inline-box;
+}
+
+.chartContainer {
+  margin-top: 5rem;
+}
+#chartHeader {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+#chartContainer {
+  height: 600px;
+}
+
+.favList {
+  margin-top: 5rem;
+}
+.favHeader {
+  display: inline;
+}
+.refresh {
+  float: right;
+  margin-right: 2rem;
+}
+.favButton {
+  margin-top: 4px;
+  font-size: 24px;
+}

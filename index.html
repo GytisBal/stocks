@@ -42,15 +42,21 @@
       <div class="search card card-body">
         <h1>Search Stocks</h1>
         <p class="lead">Enter the stock symbol</p>
-        <form class="form-inline md-form mr-auto mb-4" id="searchSymbol">
-          <input
-            class="form-control mr-sm-2"
-            type="text"
-            placeholder="Search"
-            aria-label="Search"
-            id="symbolValue"
-          />
-          <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit">
+        <form autocomplete="off" id="searchSymbol">
+          <div class="autocomplete" style="width:300px;">
+            <input
+              id="symbolValue"
+              type="text"
+              name="myStock"
+              placeholder="Stock Symbol"
+            />
+            <div id="match-list" class="autocomplete-items"></div>
+          </div>
+          <button
+            id="test"
+            class="btn btn-primary btn-rounded btn-sm my-0"
+            type="submit"
+          >
             Search
           </button>
         </form>
@@ -112,7 +118,8 @@
     </div>
 
     <div class="chartContainer">
-      <H2 id="chartHeader">The Boeing Company</H2>
+      <H2 id="chartHeader">Company name</H2>
+      <span id="referenceIndex"></span>
       <table class="table">
         <thead>
           <tr>
@@ -146,11 +153,6 @@
     </div>
     <div class="favList">
       <h2 class="favHeader">Favourite List</h2>
-
-      <h2 class="favHeader refresh">
-        Refresh:
-        <button class="favButton"><i class="fa fa-refresh"></i></button>
-      </h2>
       <table class="table">
         <thead>
           <tr>
@@ -176,11 +178,7 @@
     <script src="https://code.highcharts.com/modules/full-screen.js"></script>
 
     <script src="https://code.highcharts.com/modules/stock-tools.js"></script>
-    <!-- <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script> -->
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -191,8 +189,11 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+
     <script src="alphavantage.js"></script>
     <script src="favList.js"></script>
+    <script src="alertMessages.js"></script>
+    <script src="autocomplete.js"></script>
     <script src="ui.js"></script>
     <script src="app.js"></script>
   </body>

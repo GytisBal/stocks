@@ -9,17 +9,31 @@ class UI {
     this.changePercent = document.getElementById("changePercent");
     this.chartHeader = document.getElementById("chartHeader");
   }
-
+  // display highchart data in the html
   paint(stock) {
-    console.log(stock);
-
-    const favList3 = new FavList();
-
-    if (stock["Error Message"]) {
-      favList3.showAlert2("stock is not found", "alert-danger");
+    const myObj = stock["Meta Data"];
+    // variable for alert handling
+    const referenceIndex = document.getElementById("referenceIndex");
+    // init alert messages
+    const alertMessages = new AlertMessages();
+    // check if object is empty
+    function isEmpty(obj) {
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) return false;
+      }
+      return true;
+    }
+    // check for errors
+    if (isEmpty(myObj)) {
+      referenceIndex.value == 1;
+    } else if (stock["Error Message"]) {
+      alertMessages.showAlert2("stock is not found", "alert-danger");
     } else if (stock["Note"]) {
-      favList3.showAlert2(`${stock["Note"]}`, "alert-danger");
+      alertMessages.showAlert2(`${stock["Note"]}`, "alert-danger");
+      // if reference index = 1, dont allow other apis to fetch
+      referenceIndex.value = 1;
     } else {
+      referenceIndex.value = 0;
       //Change data based on selected time series
       let timeSeries;
       if (this.uiTimeFrame === "TIME_SERIES_INTRADAY") {
@@ -31,16 +45,6 @@ class UI {
       } else if (this.uiTimeFrame === "TIME_SERIES_MONTHLY") {
         timeSeries = "Monthly Time Series";
       }
-      // Get latest date
-      // const lastRefreshed = stock["Meta Data"]["3. Last Refreshed"];
-      //Get date without time
-      // const dateObj = new Date(lastRefreshed);
-      // const month = dateObj.getMonth() + 1; //months from 1-12
-      // const day = dateObj.getDate();
-      // const year = dateObj.getFullYear();
-      // const newdate =
-      //   year + "-" + ("0" + month).slice(-2) + "-" + ("0" + day).slice(-2);
-
       // HighChart UI starts HERE
       const tSeries = stock[`${timeSeries}`];
       let ohlc = [],
@@ -148,61 +152,71 @@ class UI {
       });
     }
   }
+  // display stock data in the html
   paint1(stock1) {
-    console.log(stock1);
-    function isEmpty(obj) {
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) return false;
-      }
-      return true;
-    }
-    const myObj = stock1["Global Quote"];
-    if (isEmpty(myObj)) {
+    // variable for alert handling
+    const referenceIndex = document.getElementById("referenceIndex");
+    // init alert messages
+    const alertMessages = new AlertMessages();
+    // check if all data is fetched
+    if (referenceIndex.value == 1) {
+    } else if (stock1["Note"]) {
+      alertMessages.showAlert2(`${stock1["Note"]}`, "alert-danger");
+      referenceIndex.value == 1;
     } else {
-      this.uiSymbol.innerHTML = stock1["Global Quote"]["01. symbol"];
-      this.name.innerHTML = chartHeader.innerHTML;
-      this.stockPrice.innerHTML = stock1["Global Quote"]["05. price"];
-      this.changePercent.innerHTML =
-        stock1["Global Quote"]["10. change percent"];
-
-      objectValues(
-        this.uiSymbol.innerHTML,
-        this.name.innerHTML,
-        this.stockPrice.innerHTML,
-        this.changePercent.innerHTML
-      );
-
-      const arrow = document.getElementById("arrow");
-      const withoutPercent = Number(this.changePercent.innerText.slice(0, 4));
-      if (withoutPercent < 0) {
-        arrow.classList.add("fa-arrow-down");
-        arrow.style.color = "red";
-        this.changePercent.style.color = "red";
+      // check if object is empty
+      function isEmpty(obj) {
+        for (const key in obj) {
+          if (obj.hasOwnProperty(key)) return false;
+        }
+        return true;
+      }
+      // change UI based on given data
+      const myObj = stock1["Global Quote"];
+      if (isEmpty(myObj)) {
+        referenceIndex.value == 1;
       } else {
-        this.changePercent.style.color = "green";
-        arrow.style.color = "green";
-        arrow.classList.add("fa-arrow-up");
+        referenceIndex.value == 0;
+        this.uiSymbol.innerHTML = stock1["Global Quote"]["01. symbol"];
+        this.name.innerHTML = chartHeader.innerHTML;
+        this.stockPrice.innerHTML = stock1["Global Quote"]["05. price"];
+        this.changePercent.innerHTML =
+          stock1["Global Quote"]["10. change percent"];
+        // pass values to another function
+        objectValues(
+          this.uiSymbol.innerHTML,
+          this.name.innerHTML,
+          this.stockPrice.innerHTML,
+          this.changePercent.innerHTML
+        );
+        // change arrow color and type
+        const arrow = document.getElementById("arrow");
+        const withoutPercent = Number(this.changePercent.innerText.slice(0, 4));
+        if (withoutPercent < 0) {
+          arrow.classList.add("fa-arrow-down");
+          arrow.style.color = "red";
+          this.changePercent.style.color = "red";
+        } else {
+          this.changePercent.style.color = "green";
+          arrow.style.color = "green";
+          arrow.classList.add("fa-arrow-up");
+        }
+        // dont show arrow on mobile size screen
+        function myFunction(x) {
+          if (x.matches) {
+            // If media query matches
+            arrow.style.display = "none";
+          }
+        }
+        let x = window.matchMedia("(max-width: 600px)");
+        myFunction(x); // Call listener function at run time
+        x.addListener(myFunction); // Attach listener function on state changes
       }
     }
   }
-  paint2(stock2) {
-    if (stock2["Error Message"]) {
-    } else if (stock2["bestMatches"].length == 0) {
-    } else if (
-      stock2["bestMatches"]["0"]["1. symbol"] !== this.uiSymbol.innerHTML
-    ) {
-    } else if (
-      stock2["bestMatches"]["0"]["1. symbol"] == this.symbol.toUpperCase()
-    ) {
-      this.chartHeader.innerHTML = stock2["bestMatches"]["0"]["2. name"];
-      this.name.innerHTML = stock2["bestMatches"]["0"]["2. name"];
-    }
-  }
-
   changeSymbol(symbol) {
     this.symbol = symbol;
   }
-
   changeUiInterval(uiInterval) {
     this.uiInterval = uiInterval;
   }
@@ -210,13 +224,21 @@ class UI {
     this.uiTimeFrame = uiTimeFrame;
   }
 }
-const favList = new FavList();
+// add and delete from the favourite list
 
+// init alert messages
+const alertMessages = new AlertMessages();
+// init favlist
+const favList = new FavList();
+// UI vars
 const listItems = document.getElementById("listItems");
 const favButton = document.getElementById("favButton");
+const chartHeader = document.getElementById("chartHeader");
 const listItemsNodes = listItems.childNodes;
-
-const MyApp = {}; // Globally scoped object
+// Globally scoped object
+const MyApp = {};
+// Globally scoped array
+const listItemsArray = [];
 // Get Values from ui.paint1
 function objectValues(symbol, name, price, changePercent) {
   MyApp.symbol = symbol;
@@ -225,42 +247,48 @@ function objectValues(symbol, name, price, changePercent) {
   MyApp.changePercent = changePercent;
 }
 objectValues();
-
-const listItemsArray = [];
-//Validate
+//Validate for adding to favourite list
 favButton.addEventListener("click", function(e) {
   const indexArray = listItemsArray.indexOf(`${MyApp.symbol}`);
-
+  MyApp.name = chartHeader.innerHTML;
   if (MyApp.symbol === undefined) {
-    favList.showAlert("Stock is undefined", "alert-danger");
+    alertMessages.showAlert("Stock is undefined", "alert-danger");
   } else if (listItemsArray.length == 5) {
-    favList.showAlert("Cannot add more than 5 stocks", "alert-danger");
-  } else if ((listItems.hasChildNodes() == false) & (indexArray == -1)) {
+    // show alert if favourite list exceeds the limit
+    alertMessages.showAlert("Cannot add more than 5 stocks", "alert-danger");
+  } else if ((indexArray == -1) & (listItems.hasChildNodes() == false)) {
+    // check if there is no matching symbol in the favourite list, and no other objects in the list
     favList.addToList(
       MyApp.symbol,
       MyApp.name,
       MyApp.price,
       MyApp.changePercent
     );
+    // push value to array
     listItemsArray.push(`${MyApp.symbol}`);
-    favList.showAlert("Stock has been added", "alert-success");
+    // show alert
+    alertMessages.showAlert("Stock has been added", "alert-success");
   } else if (listItems.hasChildNodes() & (indexArray == -1)) {
+    // check if there is no matching symbol in the favourite list, but has other objects
     favList.addToList(
       MyApp.symbol,
       MyApp.name,
       MyApp.price,
       MyApp.changePercent
     );
+    // push value to array
     listItemsArray.push(`${MyApp.symbol}`);
-    favList.showAlert("Stock has been added", "alert-success");
+    // show alert
+    alertMessages.showAlert("Stock has been added", "alert-success");
   } else {
-    favList.showAlert("Stock has already been added", "alert-danger");
+    // show alert if there is a match
+    alertMessages.showAlert("Stock has already been added", "alert-danger");
   }
 });
-// Delete stock
+// Delete stock from favourite list
 listItems.addEventListener("click", function(e) {
   const targetValue = e.target;
   favList.deleteStock(listItemsArray, targetValue);
-  favList.showAlert3("Stock has been deleted", "alert-danger");
+  alertMessages.showAlert3("Stock has been deleted", "alert-danger");
   e.preventDefault();
 });

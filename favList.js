@@ -1,5 +1,6 @@
 class FavList {
   constructor() {}
+  //create row to favourite list
   addToList(symbol, name, price, changePercent) {
     // Create tr element
     const row = document.createElement("tr");
@@ -15,7 +16,7 @@ class FavList {
         <td><a href="#" class="delete">X<a></td>
       `;
     listItems.appendChild(row);
-
+    // stock arrow functionality
     function arrow() {
       const arrow = document.getElementById(`arrow${symbol}`);
       const changePercent = document.getElementById(`changePercent${symbol}`);
@@ -30,81 +31,20 @@ class FavList {
         arrow.style.color = "green";
         arrow.classList.add("fa-arrow-up");
       }
+      // dont show arrow on mobile size screen
+      function myFunction(x) {
+        if (x.matches) {
+          // If media query matches
+          arrow.style.display = "none";
+        }
+      }
+      let x = window.matchMedia("(max-width: 600px)");
+      myFunction(x); // Call listener function at run time
+      x.addListener(myFunction); // Attach listener function on state changes
     }
     arrow();
   }
-  showAlert(message, className) {
-    // Create div
-    const div = document.createElement("div");
-    // Add classes
-    div.className = `alert ${className}`;
-    // Add text
-    div.appendChild(document.createTextNode(message));
-    // Get parent
-    const container = document.querySelector(".chartContainer");
-    // Get form
-    const form = document.querySelector(".table");
-    // Insert alert
-    container.insertBefore(div, form);
-    // Smooth scroll
-    const scrollTo = document.getElementById("chartHeader");
-    const y = scrollTo.getBoundingClientRect().top + window.scrollY;
-    window.scroll({
-      top: y,
-      behavior: "smooth"
-    });
-    // Timeout after 3 sec
-    setTimeout(function() {
-      document.querySelector(".alert").remove();
-    }, 3000);
-  }
-  showAlert2(message, className) {
-    // Create div
-    const div = document.createElement("div");
-    // Add classes
-    div.className = `alert ${className}`;
-    // Add text
-    div.appendChild(document.createTextNode(message));
-    // Get parent
-    const container = document.querySelector(".card-body");
-    // Get form
-    const form = document.getElementById("searchSymbol");
-    // Insert alert
-    container.insertBefore(div, form);
-    // Smooth scroll
-    const y = container.getBoundingClientRect().top + window.scrollY;
-    window.scroll({
-      top: y,
-      behavior: "smooth"
-    });
-    // Timeout after 3 sec
-    setTimeout(function() {
-      document.querySelector(".alert").remove();
-    }, 3000);
-  }
-  showAlert3(message, className) {
-    // Create div
-    const div = document.createElement("div");
-    // Add classes
-    div.className = `alert ${className}`;
-    // Add text
-    div.appendChild(document.createTextNode(message));
-    // Get parent
-    const container = document.querySelector(".favList");
-    // Insert alert
-    container.insertBefore(div, container.childNodes[5]);
-    // Smooth scroll
-    const y = container.getBoundingClientRect().top + window.scrollY;
-    window.scroll({
-      top: y,
-      behavior: "smooth"
-    });
-    // Timeout after 3 sec
-    setTimeout(function() {
-      document.querySelector(".alert").remove();
-    }, 3000);
-  }
-
+  // delete stock from favourite list
   deleteStock(listItemsArray, targetValue) {
     function validate() {
       if (targetValue.className === "delete") {

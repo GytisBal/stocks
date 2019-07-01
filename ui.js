@@ -193,10 +193,12 @@ class UI {
         const arrow = document.getElementById("arrow");
         const withoutPercent = Number(this.changePercent.innerText.slice(0, 4));
         if (withoutPercent < 0) {
+          arrow.classList.remove("fa-arrow-up");
           arrow.classList.add("fa-arrow-down");
           arrow.style.color = "red";
           this.changePercent.style.color = "red";
         } else {
+          arrow.classList.remove("fa-arrow-down");
           this.changePercent.style.color = "green";
           arrow.style.color = "green";
           arrow.classList.add("fa-arrow-up");

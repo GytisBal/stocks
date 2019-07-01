@@ -23,13 +23,15 @@ class FavList {
 
       const withoutPercent = Number(changePercent.innerText.slice(0, 4));
       if (withoutPercent < 0) {
+        arrow.classList.remove("fa-arrow-up");
         arrow.classList.add("fa-arrow-down");
         arrow.style.color = "red";
         changePercent.style.color = "red";
       } else {
+        arrow.classList.remove("fa-arrow-down");
+        arrow.classList.add("fa-arrow-up");
         changePercent.style.color = "green";
         arrow.style.color = "green";
-        arrow.classList.add("fa-arrow-up");
       }
       // dont show arrow on mobile size screen
       function myFunction(x) {

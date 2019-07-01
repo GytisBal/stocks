@@ -1,6 +1,6 @@
 # My 3 project
 
-## live version
+## live version https://gytisbal.github.io/stocks-API/
 
 ## Stock Search using Alpha Vantage
 
@@ -18,3 +18,19 @@ Below are some of the screenshots of how application works.
 in Figure 1, you can enter the company name or symbol, and select from a list using autocomplete.
 
 ![](img/autocomplete.png)
+
+The data is parsed and HighCharts framework is used to diplay the chart. 
+
+![](img/highcharts.png)
+
+You can ues time frame buttons to select what kind of graph you want to see in highcharts 
+
+![](img/timeframe.png)
+
+You can also use yellow button to add to favourite list
+
+![](img/favourite.png)
+
+And of course delete from the list
+
+![](img/delete.png)

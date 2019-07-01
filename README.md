@@ -17,4 +17,4 @@ Below are some of the screenshots of how application works.
 
 in Figure 1, you can enter the company name or symbol, and select from a list using autocomplete.
 ![alt text][logo]
-[logo]: https://github.com/GytisBal/stocks-API/img/autocomplete.png ""
+[logo]: https://github.com/GytisBal/stocks-API/tree/master/img/autocomplete.png "Logo Title Text 2"

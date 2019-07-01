@@ -25,7 +25,7 @@ Below are some of the screenshots of how application works.
 
 ### You can ues time frame buttons to select what kind of graph you want to see in highcharts 
 
-![](img/timeFrame.png)
+
 
 ### You can also use yellow button to add to favourite list
 

@@ -4,26 +4,26 @@
 
 ## Stock Search using Alpha Vantage
 
-As i progress into learning javascript, created this project to learn more about API calls
+Created this project to learn more about API calls
 
-doing this project got myself familiar with javascript concepts like OOP, Async/Await functions, fetch API, ES6 classes, increased overall knowledge of how javascript works
+Doing this project got myself familiar with javascript concepts like OOP, Async/Await functions, fetch API, ES6 classes, increased overall knowledge of how javascript works
 
 
 ## Functionality
 
 this is a responsive web application to search for stock information for companies using the Stock quote API and produced dynamic web content. Created front end using vanila JavaScript, HTML, CSS, Bootstrap. Used FETCH API to get the required data asynchronously. Displayed stock details using Highcharts Framework. Enhanced user experience by providing features like favorite list.
 
-Below are some of the screenshots of how application works.
+Below are some of the screenshots to show you how application works.
 
 ### in Figure 1, you can enter the company name or symbol, and select from a list using autocomplete.
 
 ![](img/autocomplete.png)
 
-### The data is parsed and HighCharts framework is used to diplay the chart. 
+### The data is parsed and HighCharts framework is used to display the chart. 
 
 ![](img/highchart.png)
 
-### You can ues time frame buttons to select what kind of graph you want to see in highcharts 
+### You can ues time frame buttons to select what kind of graph you want to see
 
 ![](img/timeFrame.png)
 
@@ -34,3 +34,12 @@ Below are some of the screenshots of how application works.
 ### And of course delete from the list
 
 ![](img/delete.png)
+
+## Tools used for this project 
+
+* Alpha Vantage API https://www.alphavantage.co/documentation/
+* Highcharts https://www.highcharts.com/demo
+* Bootstrap https://getbootstrap.com/
+* CSS
+* Vanilla JS
+

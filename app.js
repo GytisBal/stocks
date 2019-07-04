@@ -81,41 +81,56 @@ function changeHeader() {
 
 // change data based of input value, on submit
 function getSymbol(e) {
+  const alertMessages = new AlertMessages();
   // declare input value
   const symbol = document.getElementById("symbolValue").value;
   //change value for fetching data
   stock.changeSymbol(symbol);
   ui.changeSymbol(symbol);
   stock.changeSymbolSearch(symbol);
+  // define error Index for validating API call
+  let errorIndex;
   // Get and display stock data in sequence
-  const referenceIndex = document.getElementById("referenceIndex");
-
-  let test1 = function() {
-    return new Promise(function(resolve, reject) {
-      resolve(getStock());
-    });
-  };
-  let test2 = function() {
-    return new Promise(function(resolve, reject) {
-      if (referenceIndex.value == 1) {
+  stock.getStock().then(results => {
+    return new Promise((resolve, reject) => {
+      if (results["Error Message"]) {
+        alertMessages.showAlert2("stock is not found", "alert-danger");
+      } else if (results["Note"]) {
+        alertMessages.showAlert2(`${results["Note"]}`, "alert-danger");
+        reject(`Rejected getStock`);
       } else {
-        resolve(getQuote());
+        ui.paint(results);
+        resolve();
       }
-    });
-  };
-  let test3 = function() {
-    return new Promise(function(resolve, reject) {
-      resolve(changeHeader());
-    });
-  };
-
-  test1()
-    .then(function() {
-      return test2();
     })
-    .then(function() {
-      return test3();
-    });
+      .then(() => {
+        stock.getQuote().then(results => {
+          return new Promise((resolve, reject) => {
+            if (results["Note"]) {
+              alertMessages.showAlert2(`${results["Note"]}`, "alert-danger");
+              errorIndex = 1;
+              reject(`Rejected getQuote`);
+            } else {
+              errorIndex = 0;
+              ui.paint1(results);
+              resolve();
+            }
+          });
+        });
+      })
+      .then(() => {
+        stock.getSearchEndpoint().then(results => {
+          return new Promise((resolve, reject) => {
+            if (errorIndex == 1) {
+              reject(`Rejected getSearchEndpoint`);
+            } else {
+              autocomplete.changeHeader(results);
+              resolve();
+            }
+          });
+        });
+      });
+  });
   //close a list
   matchList.innerHTML = "";
   // // prevent from default submitting

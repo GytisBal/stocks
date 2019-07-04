@@ -119,10 +119,7 @@ class Autocomplete {
   }
   // Change main Header, symbol and company name from the table
   changeHeader(matches) {
-    // variable for alert handling
-    const referenceIndex = document.getElementById("referenceIndex");
-    if (referenceIndex.value == 1) {
-    } else if (matches["Error Message"]) {
+    if (matches["Error Message"]) {
     } else if (matches["bestMatches"] == undefined) {
     } else {
       this.name.innerHTML = matches["bestMatches"]["0"]["2. name"];

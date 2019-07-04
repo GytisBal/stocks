@@ -11,29 +11,14 @@ class UI {
   }
   // display highchart data in the html
   paint(stock) {
-    const myObj = stock["Meta Data"];
-    // variable for alert handling
-    const referenceIndex = document.getElementById("referenceIndex");
     // init alert messages
     const alertMessages = new AlertMessages();
-    // check if object is empty
-    function isEmpty(obj) {
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) return false;
-      }
-      return true;
-    }
-    // check for errors
-    if (isEmpty(myObj)) {
-      referenceIndex.value == 1;
-    } else if (stock["Error Message"]) {
+    // Validate
+    if (stock["Error Message"]) {
       alertMessages.showAlert2("stock is not found", "alert-danger");
     } else if (stock["Note"]) {
       alertMessages.showAlert2(`${stock["Note"]}`, "alert-danger");
-      // if reference index = 1, dont allow other apis to fetch
-      referenceIndex.value = 1;
     } else {
-      referenceIndex.value = 0;
       //Change data based on selected time series
       let timeSeries;
       if (this.uiTimeFrame === "TIME_SERIES_INTRADAY") {
@@ -45,6 +30,7 @@ class UI {
       } else if (this.uiTimeFrame === "TIME_SERIES_MONTHLY") {
         timeSeries = "Monthly Time Series";
       }
+
       // HighChart UI starts HERE
       const tSeries = stock[`${timeSeries}`];
       let ohlc = [],
@@ -154,15 +140,11 @@ class UI {
   }
   // display stock data in the html
   paint1(stock1) {
-    // variable for alert handling
-    const referenceIndex = document.getElementById("referenceIndex");
     // init alert messages
     const alertMessages = new AlertMessages();
     // check if all data is fetched
-    if (referenceIndex.value == 1) {
-    } else if (stock1["Note"]) {
+    if (stock1["Note"]) {
       alertMessages.showAlert2(`${stock1["Note"]}`, "alert-danger");
-      referenceIndex.value == 1;
     } else {
       // check if object is empty
       function isEmpty(obj) {
@@ -174,9 +156,7 @@ class UI {
       // change UI based on given data
       const myObj = stock1["Global Quote"];
       if (isEmpty(myObj)) {
-        referenceIndex.value == 1;
       } else {
-        referenceIndex.value == 0;
         this.uiSymbol.innerHTML = stock1["Global Quote"]["01. symbol"];
         this.name.innerHTML = chartHeader.innerHTML;
         this.stockPrice.innerHTML = stock1["Global Quote"]["05. price"];

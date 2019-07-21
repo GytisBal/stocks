@@ -1,8 +1,7 @@
 class Autocomplete {
-  constructor(searchText, sudas) {
+  constructor(searchText) {
     this.searchText = searchText;
     this.currentFocus = -1;
-    this.sudas = sudas;
     this.matchList = document.getElementById("match-list");
     this.search = document.getElementById("symbolValue");
     this.chartHeader = document.getElementById("chartHeader");
